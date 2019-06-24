@@ -1,0 +1,84 @@
+{layout name="public::layout"}
+<h4 class="text-center text-danger">站点管理</h4>
+
+<form  method="post" id="login" action="{:url('/site/storage')}" enctype="multipart/form-data">
+    <input type="hidden" name="id" value="{$siteInfo.id}">
+
+    <div class="form-group">
+        <label  class="col-sm-2 control-label text-right">网站名称:</label>
+        <div class="col-sm-10 ">
+         <input type="text" name="name" class="form-control" value="{$siteInfo.name}">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label text-right">关键字:</label>
+        <div class="col-sm-10">
+            <input type="text" name="keywords" class="form-control" value="{$siteInfo.keywords}">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label text-right">网站描述:</label>
+        <div class="col-sm-10">
+            <textarea class="form-control" name="desc"  id="context"  style="min-height: 250px;">{$siteInfo.desc}</textarea>
+        </div>
+    </div>
+
+    {//网站是否关闭}
+    <div class="form-group">
+        <label class="col-sm-2 control-label text-right">网站是否开启:</label>
+        &nbsp; &nbsp;<label class="radio-inline">
+            <input type="radio" name="is_open" value="1"
+                   {eq name="$siteInfo.is_open" value="1"} checked="" {/eq}
+            >开启
+        </label>
+        <label class="radio-inline">
+            <input type="radio" name="is_open" value="0"
+                   {eq name="$siteInfo.is_open" value="0"} checked="" {/eq}
+            >隐藏
+        </label>
+    </div>
+
+    {//注册是否关闭}
+    {eq name="$siteInfo.is_open" value="1"}
+    <div class="form-group">
+        <label class="col-sm-2 control-label text-right">注册是否开启:</label>
+        &nbsp; &nbsp;<label class="radio-inline">
+            <input type="radio" name="is_reg" value="1"
+                {eq name="$siteInfo.is_reg" value="1"} checked="" {/eq}
+            >开启
+        </label>
+        <label class="radio-inline">
+            <input type="radio" name="is_reg" value="0"
+               {eq name="$siteInfo.is_reg" value="0"} checked="" {/eq}
+            >隐藏
+        </label>
+    </div>
+    {/eq}
+
+    {//评论是否关闭}
+    {eq name="$siteInfo.is_open" value="1"}
+    <div class="form-group">
+        <label class="col-sm-2 control-label text-right">评论是否开启:</label>
+        <label class="radio-inline">
+            &nbsp; &nbsp;<input type="radio" name="is_comment" value="1"
+                   {eq name="$siteInfo.is_comment" value="1"} checked="" {/eq}
+            >开启
+        </label>
+        <label class="radio-inline">
+            <input type="radio" name="is_comment" value="0"
+                   {eq name="$siteInfo.is_comment" value="0"} checked="" {/eq}
+            >隐藏
+        </label>
+    </div>
+    {/eq}
+
+
+    <div class="form-group">
+        <div class="col-sm-12 " style="margin-left: 14px;">
+        <button type="submit" class="btn btn-primary" id="insert">保存</button>
+        </div>
+    </div>
+</form>
+

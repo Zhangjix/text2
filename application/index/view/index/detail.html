@@ -1,0 +1,96 @@
+{include file="public::header"}
+{include file="public::nav"}
+<div class="row">
+    <div class="col-md-8">
+        <div class="page-header">
+            <h2>{$art.cate_id|getCateName}</h2>
+        </div>
+        <div>
+                <h4><a href="{:url('detail',['id'=>$art.id])}">{$art.title}</a> </h4>
+                <p>发布者:{$art.user_id|getCateName} &nbsp;&nbsp;&nbsp;&nbsp;发布时间:{$art.create_time|date='Y-m-d'}阅读量:{$art.pv}</p>
+                <div><img src="/tp/public/uploads/{$art.title_img}"></div>
+                <div style="min-height: 10px;">{$art.context}</div>
+
+            <button class="btn btn-default" type="button" id="fav"
+                    user_id="{$art.user_id}" art_id="{$art.id}" session_id="{$Think.session.user_id} ">收藏</button>
+            <hr>
+            </div>
+
+            {//添加表单评论}
+            <h4>发布评论</h4>
+            <form class="form-horizontal" id="comment">
+                <input type="hidden" name="article_id" value="{$art.id}">
+                <input type="hidden" name="user_id" value="{$art.user_id}">
+                <textarea name="context" id="" cols="105" rows="3"></textarea>
+                <button type="button" class="btn btn-info" id="submit">提交</button>
+            </form>
+            <p class="text-success" id="res"></p>
+
+            {//表单提交}
+            <script>
+                $('#submit').on('click',function () {
+                    $.get(
+                        "{:url('insertComment')}",
+                        $('#comment').serialize(),
+                        function (data) {
+                            if(data.status ==1){
+                                $('#res').text(data.message);
+                            }else {
+                                $('#res').text(data.message);
+                            }
+                        }
+                    )
+                })
+            </script>
+
+        {volist name="commentList" id="comment"}
+        <div>
+            <p>{$comment.user_id|getUserName}&nbsp;&nbsp;&nbsp;{$comment.create_time}</p>
+            <div style="min-height: 30px;">{$comment.context}</div>
+            <hr>
+        </div>
+        {/volist}
+
+        <!--处理收藏-->
+            <script>
+                $('#fav').on('click',function(){
+                   //获取当前用户的ID和文章的ID
+                   var userId = $(this).attr('user_id');
+                   var art_id = $(this).attr('art_id');
+                   var session_id = $(this).attr('session_id');
+                    if(userId && art_id){
+                        $.ajax({
+                            type:'get',
+                            url:"{:url('index/fav')}",
+                            data:{
+                                session_id:session_id,
+                                user_id:userId,
+                                art_id:art_id,
+                                time:new Date().getTime()
+                            },
+                            dataType:'json',
+                            success:function (data) {
+                                switch (data.status){
+                                    case 1:
+                                        $('#fav').attr('class','btn btn-success');
+                                        $('#fav').text(data.message);
+                                        break;
+                                    case 0:
+                                        $('#fav').attr('class','btn btn-success');
+                                        $('#fav').text(data.message);
+                                        break;
+                                    case -1:
+                                        alert(data.message);
+                                        break;
+                                    case -2:
+                                        alert(data.message);
+                                        window.location.href="{:url('user/login')}";
+                                        break;
+                                }
+                            }
+                        });
+                    }
+                });
+            </script>
+        </div>
+    {include file="public::right"}

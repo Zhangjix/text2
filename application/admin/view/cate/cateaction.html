@@ -1,0 +1,36 @@
+{layout name="public::layout"}
+<h4 class="text-center text-danger">{$title}</h4>
+
+<form class="form-horizontal" action="{:url($actionType === 'update' ? 'cate/storage' : 'cate/cateAdd')}" method="post">
+    {if $actionType == 'update'} <!--新增数据 id不需要 因id自增-->
+    <input type="hidden" name="id" value="{$actionType === 'update' ? $cateInfo.id : ''}" >
+    {/if}
+
+    <div class="form-group">
+        <label class="col-sm-1 control-label">名称:</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" name="name" value="{$actionType === 'update' ?  $cateInfo.name : ''}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-1 control-label">排序:</label>
+        <div class="col-sm-10">
+            <input type="number" class="form-control" name="sort" value="{$actionType === 'update' ?  $cateInfo.sort : ''}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-1 control-label">状态:</label>
+        <label class="radio-inline">
+            <input type="radio" name="status" value="1" {$actionType == 'update' ?  ($cateInfo.status == '1' ? 'checked' : '') : 'checked'}>显示
+        </label>
+        <label class="radio-inline">
+            <input type="radio" name="status" value="0" {$actionType == 'update' ?  ($cateInfo.status == '0' ? 'checked' : '') : ''}>隐藏
+        </label>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-1 col-xm-10" style="margin-left: 30px;">
+            <button type="submit" class="btn btn-info">保存</button>
+        </div>
+    </div>
+    </div>
+</form>
